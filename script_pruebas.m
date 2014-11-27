@@ -1,29 +1,5 @@
-% script de pruebitas
+?5y-y5% script de pruebitas
 %
-
-%% dysart-1
-clear all
-clc
-
-nodos = (1:10)';
-freqs = [1 5 3 6 6 5 5 4 2 3]';
-
-N = length(nodos);
-M = max(freqs);
-J = [(1:M)' zeros(M,1)];
-
-mybool = zeros(N,1);
-
-for i=1:M
-    Sj = length(find(freqs==i));
-    if Sj > 0
-        J(i,2) = Sj;
-    end
-end
-
-v = floor((J(:,1)'*J(:,2))/sum(J(:,2)))+1;
-
-mybool(freqs>=v) = true;
 
 %% Prueba de tabla de vecindades
 clear all
@@ -170,19 +146,23 @@ pe = randperm(10);
 
 load MAT_fullDistance
 
-
 p = lla2ecef([LAT LON 6378100.*ones(size(LAT))]);
 
-clusterNumber = 25;
+clusterNumber = 52;
 
-[cidx C] = kmeans(p, clusterNumber);
+% Resetting the seed
+stream = RandStream.getGlobalStream;
+reset(stream);
+
+[cidx C] = kmeans(p, clusterNumber, 'Replicate', 5);
 
 figure(3)
 worldmap('Mexico')
 load coast
 plotm(lat,long)
 
-title('Mexico')
+str = strcat('Mexico - ', num2str(clusterNumber), ' groups.');
+title(str)
 for i=1:clusterNumber
     colour = 0.9.*[rand(1) rand(1) rand(1)];
     h = plotm(LAT(cidx==i),LON(cidx==i),...
@@ -190,4 +170,54 @@ for i=1:clusterNumber
     set(h, 'MarkerSize',4);
 end
 
+q = ecef2lla(C);
+
+h = plotm(q(:,1),q(:,2),'linestyle','+', 'Color','k');
+set(h,'MarkerSize',8);
+
+%% Create real distances locations 
+%
+% 25.november.2014
+%
+% We're creating a CSV with the location (lat-lon) of towns.
+% It will contain the locations that are really supposed to be
+% computed with the Google Directions API. 
+%
+% It takes into account the distance matrix (D) in the
+% MAT_fullDistance.mat file, taking its highest value and 
+% dividing it by L, so that only the most realistic 
+% distances-by-road are considered and requested in the 
+% API.
+%
+clear all
+close all
+clc
+
+load MAT_fullDistance.mat
+
+L = 40; % change this to modify the highest distance considered. 
+MAX_D = max(max(D))/L;
+
+n = length(D);
+OUT_M = zeros(n^2,7); % this will be the CSV!
+aux = zeros(n^2,1);
+count = 1;
+for i=1:n
+    for j=i:n
+        if D(i,j) <= MAX_D && i~=j
+            %                     |    start    |    finish   |                   
+            %                     | LAT    LON  |  LAT    LON |
+            OUT_M(count, :) = [i j M(i,2) M(i,3) M(j,2) M(j,3) 0];
+            aux(count) = 1;
+            count = count +1;
+        end
+    end
+end
+
+OUT_M = OUT_M(aux==1,:);
+
+str = strcat('For_Python_',num2str(L),'.csv');
+csvwrite(str,OUT_M);
+
+realmaxDistance = deg2km(MAX_D);
 

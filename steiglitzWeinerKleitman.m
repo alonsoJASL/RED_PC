@@ -1,4 +1,5 @@
-function [Kc] = steiglitzWeinerKleitman(Dc, concentrador, nodes, R)
+function [Kc] = steiglitzWeinerKleitman(Dc, concentrador, nodes, R, ...
+                                        replicate)
 %
 %           STEIGLITZ-WEINER-KLEITMAN HEURISTIC
 %
@@ -12,6 +13,12 @@ function [Kc] = steiglitzWeinerKleitman(Dc, concentrador, nodes, R)
 %
 %  version Incera
 %
+
+if nargin > 4
+    rep = replicate;
+else
+    rep = 3;
+end
 
 nodesC = nodes(concentrador==true);
 n = length(nodesC);
