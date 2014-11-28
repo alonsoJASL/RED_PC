@@ -13,7 +13,9 @@ import csv
 # Modify with own key
 keyJASL = 'AIzaSyDVWjCMy78Zuk244tB3duLXCK2vSn6NhTQ'
 keyISAAC = 'AIzaSyCRVZD_oqSEeHGn0T74_O_eedqgcoWW-hc'
-gmaps = googlemaps.Client(key=keyJASL)
+
+keys = [keyJASL, keyISAAC]
+gmaps = googlemaps.Client(key=keys[0])
 
 fileNames = ['Chihuahua_grupo.csv','Puebla_grupo.csv',
              'ChiapasTuxtla_grupo.csv']
@@ -27,7 +29,10 @@ Locations =  {'idx':[],
              'finish_lon':[],
              'distance':[]}
 
-with open(fileNames[0],'r') as f:
+print('We\'re doing: '+fileNames[2])
+s = time.time()
+
+with open(fileNames[2],'r') as f:
     for line in f.readlines():
         i,j,stlat,stlon,flat,flon, dist = line.strip().split(',')
         Locations['idx'].append(int(i))
@@ -37,8 +42,6 @@ with open(fileNames[0],'r') as f:
         Locations['finish_lat'].append(float(flat))
         Locations['finish_lon'].append(float(flon))
         Locations['distance'].append(float(dist))
-        #Locations.append([int(i),int(j),float(stlat),float(stlon),
-        #                  float(flat),float(flon),float(dist)])
     f.close()
 
 size_Locations = len(Locations['idx'])
@@ -46,9 +49,6 @@ size_Locations = len(Locations['idx'])
 print('Read CSV file, about to compute distances')
 
 for i in range(0,size_Locations):
-    #directions_result = gmaps.directions((Locations[i][2],Locations[i][3]),
-    #                                  (Locations[i][4],Locations[i][5]),
-    #                                  region = "mx")
     directions_result = gmaps.directions((Locations['start_lat'][i],
                                       Locations['start_lon'][i]),
                                       (Locations['finish_lat'][i],
@@ -58,8 +58,11 @@ for i in range(0,size_Locations):
     
     Locations['distance'][i] = directions['distance']['value']/1000
 
-    if i==(size_Locations/2):
-        print('     We\'re about half way!')
+    if i==2499:
+        print('     We\'re changing the key to: ')
+        print('    '+keys[0])
+        print('     We\'re more than halfway there!')
+        gmaps=googlemaps.Client(keys[1])
 
 print('We\'re done computing distances, creating new CSV file...')
 
@@ -68,9 +71,14 @@ df = pd.DataFrame(data=Locations,columns=
                    'start_lon','finish_lat',
                    'finish_lon','distance'])
 
-filetoSave = 'Distance_'+fileNames[0]
+filetoSave = 'Distance_'+fileNames[2]
 
 ff = open(filetoSave,'w')
 df.to_csv(ff,header=False)
 ff.close()
+s= time.time() - s
+# Closing statements
+print('We did about: '+str(size_Locations)+' consults to Google,')
+print('taking about '+ str(s) + ' seconds.')
+print('All set, bye!')
 # DONE!

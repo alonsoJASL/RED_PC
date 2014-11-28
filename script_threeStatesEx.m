@@ -24,7 +24,7 @@ load MAT_fullDistance
 %   D      |   3651x3651  |  106638408  double              
 %   LAT    |   3651x1     |      29208  double              
 %   LON    |   3651x1     |      29208  double
-%   nodes  |   3651x1     |      29208  double
+%   IDS    |   3651x1     |      29208  double
 %   M      |   3651x3     |      87624  double                           
 %   n      |      1x1     |          8  double              
 % -----------------------------------------------
@@ -55,14 +55,14 @@ CHIH_group = cidx(LAT==CHIH(1));
 PUE_group = cidx(LAT==PUE(1));
 CHTUX_group = cidx(LAT==CHTUX(1));
 
-nodes_CHIH = nodes(cidx==CHIH_group);
-nodes_PUE = nodes(cidx==PUE_group);
-nodes_CHTUX = nodes(cidx==CHTUX_group);
+nodes_CHIH = IDS(cidx==CHIH_group);
+nodes_PUE = IDS(cidx==PUE_group);
+nodes_CHTUX = IDS(cidx==CHTUX_group);
 
 n_CHIH = length(nodes_CHIH);
 n_PUE = length(nodes_PUE);
 n_CHTUX = length(nodes_CHTUX);
-
+%%
 output_CHIH = zeros(n_CHIH^2,7);
 output_PUE = zeros(n_PUE^2,7);
 output_CHTUX = zeros(n_CHTUX^2,7);
