@@ -1,23 +1,47 @@
 function [Kc, totalDist,...
           defi, permi] = steiglitzWeinerKleitman1(Dc, concentrador, ...
-                                                    nodes, R,replicate)
+                                                    nodes, R,replicate,...
+                                                    verbose)
 %
 %           STEIGLITZ-WEINER-KLEITMAN HEURISTIC
 %
+% Finds a low-cost R-connected network of the concentrators (main nodes).
+% Mind the '1' at the end of the name, it is important.
+% 
+%
 %           OUTPUT:
-%               Kc := Main-nodes connection matrix
-%        totalDist := total dsitance
-%             defi := deficit vector (optional)
-%            permi := permutation vector.
+%               Kc := Main-nodes' connection matrix.
+%        totalDist := total distance of the output matrix.
+%             defi := (optional) deficit vector.
+%            permi := (optional) permutation vector.
 %
 %            INPUT:
 %               Dc := Main nodes' distance matrix
-%     concentrador := boolean. Main-nodes' identifier
+%     concentrador := (boolean) Main-nodes' identifier
 %            nodes := nodes' identifier
 %                R := Redundancy factor
-%        replicate := Times to run the heuristic.
+%        replicate := (optional) Times to run the heuristic. 
+%                     DEFAULT = 5, RECOMMENDED ~ 50.
+%          verbose := (optional - boolean) Shows debug info.
 %
-%  version Incera
+%           USAGE: 
+%    (1) [Kc, tD] = steiglitzWeinerKleitman1(Dc, concentrador,nodes, R)
+%              The easiest way is not to worry sbout deficit-output or
+%              the permutation used. 
+%
+%    (2) [Kc, tD] = steiglitzWeinerKleitman1(Dc, concentrador,nodes, R, rep)
+%              You might want to run the algorithm several times, to be
+%              sure that you're proposing the most efficient network. Just
+%              add the 'replicate' parameter.
+%
+%    (3) [Kc, tD] = steiglitzWeinerKleitman1(Dc, concentrador,nodes,...
+%                                            R, rep, verbose)
+%             If you want to show the development of the algorithm, showing
+%             the iteration one's currently in, the preliminary cost of the
+%             matrix and the final cost found yet.
+%
+% SEE ALSO dysartGeorganas.m, esauWilliams.m
+%              
 %
 if nargin > 4
     rep = replicate;
@@ -25,19 +49,32 @@ else
     rep = 5;
 end
 
+verb = false;
+
+if nargin > 5
+    verb = verbose;
+end
+
 maxiter = 100;
 
 nodesC = nodes(concentrador==true);
 n = length(nodesC);
 
+% final variables initialized
 finalM = zeros(n);
 finalC = 0;
  
-fprintf('\n| It  |  workC  |  finalC  |  :');
+if verb==true
+    fprintf('\n| It  |  workC  |  finalC  |  :');
+end
+
 for i=1:rep
+    % Set a random integer seed for the algorithm to start with.
     Rnum = randi(10000, 1, 1);
     rng(Rnum,'twister');
+    % 
     
+    % "Work" variables, that might turn into finalM and finalC
     workM = zeros(n);
     workC = 0;
     
@@ -103,7 +140,9 @@ for i=1:rep
             finalM = workM;
         end
     end  
-    fprintf('\n| %3d | %4.3f | %4.3f|', i, workC, finalC);
+    if verb==true
+        fprintf('\n| %3d | %4.3f | %4.3f|', i, workC, finalC);
+    end
 end
 
 Kc = finalM;

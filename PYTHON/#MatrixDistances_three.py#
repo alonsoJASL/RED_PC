@@ -16,7 +16,7 @@ keyISAAC = 'AIzaSyCRVZD_oqSEeHGn0T74_O_eedqgcoWW-hc'
 keyIVI = 'AIzaSyDdRsqVOSuf_rsTBcWGdw02qgs5uGQe9-Y'
 keyOros = 'AIzaSyBD60IkWt5RC24XuZPRQG3yHaZX20YNCP0'
 
-keys = [keyJASL, keyISAAC, keyIVI, keyOros]
+keys = [keyISAAC, keyIVI, keyOros, keyJASL]
 keycount = len(keys)
 gmaps = googlemaps.Client(key=keys[0])
 

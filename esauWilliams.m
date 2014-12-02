@@ -1,11 +1,25 @@
 function [Kret] = esauWilliams(Dindx, Cindx, Nindx)
 %
-%        ESAU-WILLIAMS ALGORITHM
+%                ESAU-WILLIAMS ALGORITHM
+% 
+% Finds the most cost-effective way of connecting a set of nodes to a
+% concentrator. 
 %
+%       OUTPUT:
+%            Kret := Connection matrix of the nodes to be connected. 
+%
+%        INPUT:
+% 
 %           Dindx := distance Matrix for Cindx
 %           Cindx := Node index
 %           Nindx := Nodes to be connected
 %
+%        USAGE:
+%           [Kret] = esauWilliams(Dindx, Cindx, Nindx)
+%
+% SEE ALSO dysartGeorganas.m, steiglitzWeinerKleitman1.m
+%
+
 N = length(Nindx);
 indx = find(Nindx == Cindx);
 worked = zeros(N,1);
@@ -25,8 +39,6 @@ for i=1:N
 end
 
 termine = false;
-
-
 while ~termine
     [minCol Icol] = min(diffM);
     [~, Irow] = min(minCol);

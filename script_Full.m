@@ -1,8 +1,8 @@
 % Script: Full program
 %
 % Description: Full implementation of the program that generates the
-% Distance Matrix, and sets off creating the most efficient network 
-% design
+% Distance Matrix, taking into account great circle distances (as the crow
+% flies).
 %
 
 %% Getting the full distance Matrix.
@@ -83,6 +83,7 @@ minLat = 23;
 
 maxLon = -103;
 minLon = -107;
+%
 
 LAT = M(:,2);
 LON = M(:,3);

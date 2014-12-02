@@ -10,6 +10,25 @@
 % Finally, we're using Dysart-Georganas algorithm to find the 
 % best suited cities to be turned into MAIN NODES. 
 %
+% update: 30/11/2014. Thanks to the Steiner-Weiner-Kleitman Algorithm,
+% where we update the random number generator, it is very hard now to get
+% the same groups as before. It is suggested that we set the seed like: 
+%   
+%                   rng(110833,'twister');
+%                   % Resetting the seed
+%                   stream = RandStream.getGlobalStream;
+%                   reset(stream);
+%
+% So that whenever this script is run, the same output is produced. 
+% IT IS VERY IMPORTANT to notice that the files: 
+%
+%       - ChiapasTuxtla_grupo.csv
+%       - Chihuahua_grupo.csv
+%       - Puebla_grupo.csv
+% 
+% WILL CHANGE if this script is run again. 
+%        
+%
 clear all
 close all
 clc
@@ -62,12 +81,12 @@ nodes_CHTUX = IDS(cidx==CHTUX_group);
 n_CHIH = length(nodes_CHIH);
 n_PUE = length(nodes_PUE);
 n_CHTUX = length(nodes_CHTUX);
-%%
+%
 output_CHIH = zeros(n_CHIH^2,7);
 output_PUE = zeros(n_PUE^2,7);
 output_CHTUX = zeros(n_CHTUX^2,7);
 
-% Build for Chihuahua
+%% Build for Chihuahua
 count=1;
 aux = zeros(n_CHIH^2,1);
 

@@ -1,4 +1,4 @@
-?5y-y5% script de pruebitas
+% script de pruebitas
 %
 
 %% Prueba de tabla de vecindades
