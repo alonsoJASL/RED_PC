@@ -22,16 +22,17 @@ POBch = POB(nodes_CHIH);
 
 % force Chihuahua City into the main nodes.
 concentrador(LAT(nodes_CHIH)==CHIH(1)) = true;
-%concentrador(POBch<=5000) = false;
+concentrador(POBch<=4800) = false;
 
 Dc = dist_CHIH(concentrador==true, concentrador==true);
 %
 [Kc, totDist, defi, permi] = ...
     steiglitzWeinerKleitman1(Dc, concentrador, ...
-                           nodes_CHIH, 2, 1000);
+                           nodes_CHIH, 3, 1000);
 
 [groupindx, numberOfGroups] = buildSubgroups(concentrador,...
-                                                nodes_CHIH);
+                                             nodes_CHIH,...
+                                             dist_CHIH);
 CM_CHIH = zeros(size(dist_CHIH)); % full conectivity matrix.
 concentrators = nodes_CHIH(concentrador==true);
 
@@ -82,7 +83,6 @@ for i=1:n
     end
 end
 
-
 nc = sum(concentrador);
 I = [];
 
@@ -91,9 +91,9 @@ for i=1:nc
         if Kc(i,j)~=0
             I = [I;i j];
             h = plotm([LATc(i) LONc(i); LATc(j) LONc(j)],...
-                '+-','Color',cities);
+                '*-','Color',cities);
             set(h, 'MarkerSize',bigmarker,...
-                'Linewidth',1.00000001);
+                'Linewidth',1.000001);
         end
     end
 end
@@ -101,12 +101,12 @@ end
 h = plotm(LATnc, LONnc,...
     'linestyle','o','Color',colour);
 set(h, 'MarkerSize',marker,...
-    'Linewidth',1.00000001);
+    'Linewidth',1.000001);
 
 h = plotm([LATc(nc) LONc(nc); LATc(1) LONc(1)],...
-           '+-','Color',cities);
+           '*-','Color',cities);
 set(h, 'MarkerSize',bigmarker,...
-    'Linewidth',1.00000001);
+    'Linewidth',1.000001);
 
 h = plotm(CHIH,...
     'linestyle','o','Color','k');

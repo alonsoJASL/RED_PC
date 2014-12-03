@@ -12,7 +12,8 @@ CSV_CHIH = csvread('Distance_Chihuahua_grupo.csv',0,1);
 
 cd ..
 %
-n_CHIH = length(CSV_CHIH(CSV_CHIH(:,1)==CSV_CHIH(1,1),1));
+nodes_CHIH = unique([CSV_CHIH(:,1);CSV_CHIH(:,2)]);
+n_CHIH = length(nodes_CHIH);
 dist_CHIH = zeros(n_CHIH);
 
 count = 1;
@@ -26,7 +27,6 @@ for i=1:n_CHIH
     end
 end
 dist_CHIH = dist_CHIH + dist_CHIH';
-nodes_CHIH = unique(CSV_CHIH(:,1));
 
 CHIH = [28.67113 -106.10523];
 
@@ -46,8 +46,8 @@ CSV_CHTUX = csvread('Distance_ChiapasTuxtla_grupo.csv',0,1);
 
 cd ..
 %
-n_CHTUX = ...
-    length(CSV_CHTUX(CSV_CHTUX(:,1)==CSV_CHTUX(1,1),1));
+nodes_CHTUX = unique([CSV_CHTUX(:,1);CSV_CHTUX(:,2)]);
+n_CHTUX = length(nodes_CHTUX);
 dist_CHTUX = zeros(n_CHTUX);
 
 count = 1;
@@ -61,7 +61,6 @@ for i=1:n_CHTUX
     end
 end
 dist_CHTUX = dist_CHTUX + dist_CHTUX';
-nodes_CHTUX = unique(CSV_CHTUX(:,1));
 
 CHTUX = [16.746 -93.13263];
 
@@ -69,6 +68,39 @@ clear count i j;
 
 save MAT_CHTUX
 
+%% PUEBLA
+
+clear all
+close all
+clc
+%
+cd ./PYTHON/
+
+CSV_PUE = csvread('Distance_Puebla_grupo.csv',0,1);
+
+cd ..
+%
+nodes_PUE = unique([CSV_PUE(:,1);CSV_PUE(:,2)]);
+n_PUE = length(nodes_PUE);
+dist_PUE = zeros(n_PUE);
+
+count = 1;
+
+for i=1:n_PUE
+    for j=i:n_PUE
+        if i~=j
+            dist_PUE(i,j) = CSV_PUE(count,7);
+            count=count+1;
+        end
+    end
+end
+dist_PUE = dist_PUE + dist_PUE';
+
+PUE = [19.04005 -98.19297];
+
+clear count i j;
+
+save MAT_PUE
 
 %% Dysart-Georganas
 

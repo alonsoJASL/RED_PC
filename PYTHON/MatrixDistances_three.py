@@ -15,8 +15,11 @@ keyJASL = 'AIzaSyDVWjCMy78Zuk244tB3duLXCK2vSn6NhTQ'
 keyISAAC = 'AIzaSyCRVZD_oqSEeHGn0T74_O_eedqgcoWW-hc'
 keyIVI = 'AIzaSyDdRsqVOSuf_rsTBcWGdw02qgs5uGQe9-Y'
 keyOros = 'AIzaSyBD60IkWt5RC24XuZPRQG3yHaZX20YNCP0'
+keyMAYTE = 'AIzaSyDiTs4L73aA2b3sIYfsSCLL8AcJm1n_g1w'
+keyJOAN = 'AIzaSyBAWQAnJV_L7vYlzyyKy4H-vmg4tBClCLQ'
+keyDeLINT = 'AIzaSyBNjDdSkn7YbOL-VtkU8IheoCQKNJk0DNg'
 
-keys = [keyJASL, keyISAAC, keyIVI, keyOros]
+keys = [keydDeLINT, keyJOAN, keyISAAC, keyIVI, keyOros, keyMAYTE, keyJASL]
 keycount = len(keys)
 gmaps = googlemaps.Client(key=keys[0])
 

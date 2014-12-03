@@ -54,6 +54,7 @@ p = lla2ecef([LAT LON 6378100.*ones(size(LAT))]);
 clusterNumber = 51;
 
 % Resetting the seed
+rng('default');
 stream = RandStream.getGlobalStream;
 reset(stream);
 
@@ -64,7 +65,7 @@ reset(stream);
 % CHIHUAHUA := [28.67113 -106.10523]
 % PUEBLA    := [19.04005 -98.19297]
 % CHIAPAS   := [16.746 -93.13263]
-%
+%%
 
 CHIH = [28.67113 -106.10523];
 PUE = [19.04005 -98.19297];
