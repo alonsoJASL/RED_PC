@@ -18,8 +18,12 @@ keyOros = 'AIzaSyBD60IkWt5RC24XuZPRQG3yHaZX20YNCP0'
 keyMAYTE = 'AIzaSyDiTs4L73aA2b3sIYfsSCLL8AcJm1n_g1w'
 keyJOAN = 'AIzaSyBAWQAnJV_L7vYlzyyKy4H-vmg4tBClCLQ'
 keyDeLINT = 'AIzaSyBNjDdSkn7YbOL-VtkU8IheoCQKNJk0DNg'
+keyANDRE = 'AIzaSyD7-JGjlCrNb7Ic0P44mmci3zUXJClkFEI'
 
-keys = [keydDeLINT, keyJOAN, keyIVI, keyOros, keyMAYTE, keyJASL,keyISAAC]
+keys = [keyANDRE, 
+        keyISAAC, keyJOAN, keyDeLINT,
+        keyIVI, keyOros, keyMAYTE, keyJASL]
+
 keycount = 0
 gmaps = googlemaps.Client(key=keys[keycount])
 
@@ -64,11 +68,11 @@ for i in range(0,size_Locations):
     
     Locations['distance'][i] = directions['distance']['value']/1000
 
-    if i%2500==0:
-        print('     We\'re changing the key to: ')
-        print('    '+keys[0])
-        print('     We\'re more than halfway there!')
+    if i%2500==0 and i!=0:
         keycount = keycount + 1
+        print('     We\'re changing the key to: ')
+        print('    '+str(keys[keycount]))
+        print('     We\'re getting there!')
         gmaps=googlemaps.Client(keys[keycount])
 
 print('We\'re done computing distances, creating new CSV file...')

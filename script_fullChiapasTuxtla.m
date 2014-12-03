@@ -15,6 +15,12 @@ clc
 load MAT_CHTUX
 load MAT_fullDistance
 
+% Parameters
+k = 4; % Connectivity for Dysart-Georganas
+R = 3; % Redundancy for Steiglitz-Weiner-Kleitman
+minpop = 20000; % min population to be concentrator
+%
+
 POB_CHTUX = POB(nodes_CHTUX);
 
 [nodos concentrador v freqs] = ...
@@ -22,7 +28,7 @@ POB_CHTUX = POB(nodes_CHTUX);
 
 % force Chiapas/Tuxtla City into the main nodes.
 concentrador(LAT(nodes_CHTUX)==CHTUX(1)) = true;
-concentrador(POB_CHTUX<=20000) = false;
+concentrador(POB_CHTUX<=minpop) = false;
 
 Dc = dist_CHTUX(concentrador==true, ...
                 concentrador==true);
@@ -47,7 +53,12 @@ for i=1:numberOfGroups
     Kret = esauWilliams(Dindx, Cindx, Nindx);
     CM_CHTUX(groupindx==i,groupindx==i) = Kret;
 end
-                            
+               
+% FULL CONECTIVITY MATRIX!!
+CM_CHTUX(concentrador==true, concentrador==true) = Kc;
+
+cell_CHTUX  = toCell(NOMBRES(nodes_CHTUX), CM_CHTUX, 'Matriz-Tuxtla.csv');
+
 %% Plot
 clc
 % meaningless variables (just to plot pretty)
@@ -98,6 +109,11 @@ for i=1:nc
         end
     end
 end
+
+%textm(CHTUX(1), CHTUX(2),'Tuxtla Gutierrez');
+offs = -0.001 + (0.002).*rand(size(LATc));
+textm(LATc.*(1+offs),LONc,...
+    NOMBRES(nodes_CHTUX(concentrador==true)));
 
 h = plotm([LATc(nc) LONc(nc); LATc(1) LONc(1)],...
            '*-','Color','m');
