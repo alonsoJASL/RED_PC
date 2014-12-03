@@ -45,6 +45,9 @@ for i=1:numberOfGroups
     Kret = esauWilliams(Dindx, Cindx, Nindx);
     CM_CHIH(groupindx==i,groupindx==i) = Kret;
 end
+
+CM_CHIH(concentrador==true, concentrador==true) = Kc;
+
                             
 %% Plot
 clc

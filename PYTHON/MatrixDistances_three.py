@@ -19,9 +19,9 @@ keyMAYTE = 'AIzaSyDiTs4L73aA2b3sIYfsSCLL8AcJm1n_g1w'
 keyJOAN = 'AIzaSyBAWQAnJV_L7vYlzyyKy4H-vmg4tBClCLQ'
 keyDeLINT = 'AIzaSyBNjDdSkn7YbOL-VtkU8IheoCQKNJk0DNg'
 
-keys = [keydDeLINT, keyJOAN, keyISAAC, keyIVI, keyOros, keyMAYTE, keyJASL]
-keycount = len(keys)
-gmaps = googlemaps.Client(key=keys[0])
+keys = [keydDeLINT, keyJOAN, keyIVI, keyOros, keyMAYTE, keyJASL,keyISAAC]
+keycount = 0
+gmaps = googlemaps.Client(key=keys[keycount])
 
 fileNames = ['Chihuahua_grupo.csv','Puebla_grupo.csv',
              'ChiapasTuxtla_grupo.csv']
@@ -64,11 +64,12 @@ for i in range(0,size_Locations):
     
     Locations['distance'][i] = directions['distance']['value']/1000
 
-    if i%2500:
+    if i%2500==0:
         print('     We\'re changing the key to: ')
         print('    '+keys[0])
         print('     We\'re more than halfway there!')
-        gmaps=googlemaps.Client(keys[1])
+        keycount = keycount + 1
+        gmaps=googlemaps.Client(keys[keycount])
 
 print('We\'re done computing distances, creating new CSV file...')
 
@@ -77,7 +78,7 @@ df = pd.DataFrame(data=Locations,columns=
                    'start_lon','finish_lat',
                    'finish_lon','distance'])
 
-filetoSave = 'Distance_'+fileNames[2]
+filetoSave = 'Distance_'+fileNames[1]
 
 ff = open(filetoSave,'w')
 df.to_csv(ff,header=False)
