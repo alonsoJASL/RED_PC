@@ -19,10 +19,29 @@ keyMAYTE = 'AIzaSyDiTs4L73aA2b3sIYfsSCLL8AcJm1n_g1w'
 keyJOAN = 'AIzaSyBAWQAnJV_L7vYlzyyKy4H-vmg4tBClCLQ'
 keyDeLINT = 'AIzaSyBNjDdSkn7YbOL-VtkU8IheoCQKNJk0DNg'
 keyANDRE = 'AIzaSyD7-JGjlCrNb7Ic0P44mmci3zUXJClkFEI'
+keyROD = 'AIzaSyC2bvTzWmdr_1_kgzJ7fmGbAd1YmuuwLFs'
+keyFER = 'AIzaSyDEBFgM8GeV7dOzJaK_71ObkfrGxHuUE7k'
+keyMARTIN = 'AIzaSyC4uUFhYqzRsdLb2O8sXqrMdgTDYQC16nM'
+keyDAISY = 'AIzaSyBbGe68iy3keQbkMFfyuXNEeN7tq-7Pm5M'
+keyHUGO = 'AIzaSyB5jEgkRS2u3qpHYcBixo8Zy2siLVVIcWQ'
+keyILSE = 'AIzaSyDQwzc5u1qv9mbQ3fhZEucOy-mfa00-4WU'
+keySEBAS = 'AIzaSyDauNdiEztxXlGG6-vF0hZfX2joB0VeeS4'
 
-keys = [keyANDRE, 
-        keyISAAC, keyJOAN, keyDeLINT,
-        keyIVI, keyOros, keyMAYTE, keyJASL]
+keys = [keySEBAS,
+        keyILSE,
+	keyHUGO,
+	keyMARTIN,
+	keyDAISY,
+	keyFER,
+        keyROD,
+        #keyJOAN,
+        keyDeLINT,
+        keyIVI,
+        keyOros,
+        keyMAYTE,
+        keyJASL,
+        keyANDRE, 
+        keyISAAC]
 
 keycount = 0
 gmaps = googlemaps.Client(key=keys[keycount])
@@ -58,22 +77,41 @@ size_Locations = len(Locations['idx'])
 
 print('Read CSV file, about to compute distances')
 
-for i in range(0,size_Locations):
-    directions_result = gmaps.directions((Locations['start_lat'][i],
-                                      Locations['start_lon'][i]),
-                                      (Locations['finish_lat'][i],
-                                       Locations['finish_lon'][i]),
-                                      region = "mx")
-    directions = directions_result[0]['legs'][0]
+i = 0
+j = 0
+while i < size_Locations:
+    try:
+        directions_result = gmaps.directions((Locations['start_lat'][i],
+                                              Locations['start_lon'][i]),
+                                             (Locations['finish_lat'][i],
+                                              Locations['finish_lon'][i]),
+                                             region = "mx")
+        directions = directions_result[0]['legs'][0]
     
-    Locations['distance'][i] = directions['distance']['value']/1000
+        Locations['distance'][i] = directions['distance']['value']/1000
+        
+        if j == 2500:
+            j = 0
+            keycount = keycount + 1
+            print('     We\'re changing the key to: ')
+            print('    '+str(keys[keycount]))
+            print('     We\'re getting there!')
+            gmaps=googlemaps.Client(keys[keycount])
 
-    if i%2500==0 and i!=0:
+        i = i + 1
+        j = j + 1
+    except googlemaps.exceptions.ApiError as ApiError:
+        print('\n    We got an API error!! Let\'s try another key.')
+        j = 0
         keycount = keycount + 1
         print('     We\'re changing the key to: ')
         print('    '+str(keys[keycount]))
-        print('     We\'re getting there!')
         gmaps=googlemaps.Client(keys[keycount])
+    except googlemaps.exceptions.Timeout as Timeout:
+        print('\n    We got a TIMEOUT!! Let\'s try again.')
+        print(Timeout)
+        print(' ')
+        
 
 print('We\'re done computing distances, creating new CSV file...')
 

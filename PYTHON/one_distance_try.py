@@ -20,7 +20,7 @@ import csv
 #keyDeLINT = 'AIzaSyBNjDdSkn7YbOL-VtkU8IheoCQKNJk0DNg'
 #keyANDRE = 'AIzaSyD7-JGjlCrNb7Ic0P44mmci3zUXJClkFEI'
 
-keytouse = 'AIzaSyDVWjCMy78Zuk244tB3duLXCK2vSn6NhTQ'
+keytouse = 'AIzaSyBAWQAnJV_L7vYlzyyKy4H-vmg4tBClCLQ'
 gmaps = googlemaps.Client(key=keytouse)
 
 stlat = 19.2414
@@ -37,10 +37,15 @@ try:
     steps = directions['steps']
 
     print('We didn\'t have an error!!!')
+    print('distance = '+str(distance)+' KM')
 
-except ValueError:
-    print('We got an error!')
-    print(ValueError)
+except googlemaps.exceptions.ApiError as ApiErr:
+    print('We got an API error!')
+    print(ApiErr)
+
+except googlemaps.exceptions.Timeout as Timeout:
+    print('We got a TIMEOUT!!')
+    print(Timeout)
 
 print('We\'re out of the TRY-CATCH')
 
