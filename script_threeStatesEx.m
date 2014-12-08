@@ -14,7 +14,7 @@
 % where we update the random number generator, it is very hard now to get
 % the same groups as before. It is suggested that we set the seed like: 
 %   
-%                   rng(110833,'twister');
+%                   rng('default');
 %                   % Resetting the seed
 %                   stream = RandStream.getGlobalStream;
 %                   reset(stream);
@@ -58,13 +58,35 @@ rng('default');
 stream = RandStream.getGlobalStream;
 reset(stream);
 
-[cidx C] = kmeans(p, clusterNumber, 'Replicate', 5);
+[GROUPS_51] = kmeans(p, clusterNumber, 'Replicate', 5);
+
+
+clear stream;
+clear p;
 
 % Checking the groups
 %
 % CHIHUAHUA := [28.67113 -106.10523]
 % PUEBLA    := [19.04005 -98.19297]
 % CHIAPAS   := [16.746 -93.13263]
+%% Plot 51-groups
+figure(4)
+worldmap('Mexico')
+load coast
+plotm(lat,long)
+
+title('Division de Mexico en grupos');
+
+for i=1:clusterNumber
+    marker = 3;
+    colour = 0.8.*[rand(1) rand(1) rand(1)];
+    h = plotm(LAT(cidx==i),LON(cidx==i),...
+    'linestyle','o','Color',colour);
+    set(h, 'MarkerSize',marker);
+end
+    
+
+
 %%
 
 CHIH = [28.67113 -106.10523];

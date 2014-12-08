@@ -26,8 +26,10 @@ keyDAISY = 'AIzaSyBbGe68iy3keQbkMFfyuXNEeN7tq-7Pm5M'
 keyHUGO = 'AIzaSyB5jEgkRS2u3qpHYcBixo8Zy2siLVVIcWQ'
 keyILSE = 'AIzaSyDQwzc5u1qv9mbQ3fhZEucOy-mfa00-4WU'
 keySEBAS = 'AIzaSyDauNdiEztxXlGG6-vF0hZfX2joB0VeeS4'
+keyDIEGO = 'AIzaSyDxud7UtMczI3RDzQ4S4TbQqYRUth4xD8k'
 
-keys = [keySEBAS,
+keys = [keyDIEGO,
+        keySEBAS,
         keyILSE,
 	keyHUGO,
 	keyMARTIN,
@@ -100,6 +102,7 @@ while i < size_Locations:
 
         i = i + 1
         j = j + 1
+        
     except googlemaps.exceptions.ApiError as ApiError:
         print('\n    We got an API error!! Let\'s try another key.')
         j = 0
@@ -107,6 +110,7 @@ while i < size_Locations:
         print('     We\'re changing the key to: ')
         print('    '+str(keys[keycount]))
         gmaps=googlemaps.Client(keys[keycount])
+        
     except googlemaps.exceptions.Timeout as Timeout:
         print('\n    We got a TIMEOUT!! Let\'s try again.')
         print(Timeout)
