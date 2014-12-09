@@ -59,7 +59,7 @@ CM_CHTUX(concentrador==true, concentrador==true) = Kc;
 
 cell_CHTUX  = toCell(NOMBRES(nodes_CHTUX), CM_CHTUX, 'Matriz-Tuxtla.csv');
 
-%% Plot
+% Plot
 clc
 % meaningless variables (just to plot pretty)
 marker = 4;
